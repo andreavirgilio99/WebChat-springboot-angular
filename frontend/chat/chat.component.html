@@ -1,0 +1,85 @@
+<link
+  href="https://fonts.googleapis.com/icon?family=Material+Icons"
+  rel="stylesheet"
+/>
+<div class="component">
+  <div class="container-fluid h-100">
+    <div class="row justify-content-center h-100">
+      <div class="card-footer"></div>
+    </div>
+  </div>
+  <div class="col-md-8 col-xl-6 chat">
+    <div class="card">
+      <div class="card-header msg_head">
+        <div class="d-flex bd-highlight">
+          <div class="img_cont">
+            <img [src]="otherUser?.propic" class="rounded-circle user_img" />
+          </div>
+          <div class="user_info">
+            <span>Chat con {{ otherUser?.firstName }}</span>
+          </div>
+        </div>
+      </div>
+      <div #chat id="chat" class="card-body msg_card_body">
+        <!--messages - start> -->
+        <div *ngFor="let msg of messages | async">
+          <div
+            class="d-flex justify-content-start mb-4"
+            *ngIf="msg.sender === otherUser!.nickname; else thisUserMsg"
+          >
+            <div class="img_cont_msg">
+              <img
+                [src]="otherUser!.propic"
+                class="rounded-circle user_img_msg"
+              />
+            </div>
+            <div class="msg_cotainer">
+              {{ msg.content }}
+              <span class="msg_time">{{
+                whenWasItPublished(msg.t_stamp)
+              }}</span>
+            </div>
+          </div>
+
+          <ng-template #thisUserMsg>
+            <div class="d-flex justify-content-end mb-4">
+              <div class="msg_cotainer_send">
+                {{ msg.content }}
+                <span class="msg_time_send">{{
+                  whenWasItPublished(msg.t_stamp)
+                }}</span>
+              </div>
+              <div class="img_cont_msg">
+                <img
+                  [src]="thisUser.propic"
+                  class="rounded-circle user_img_msg"
+                />
+              </div>
+            </div>
+          </ng-template>
+        </div>
+        <!--messages - end-->
+      </div>
+      <div class="card-footer">
+        <div class="input-group">
+          <div class="input-group-append">
+            <span class="input-group-text attach_btn"
+              ><i class="fas fa-paperclip"></i
+            ></span>
+          </div>
+          <textarea
+            [formControl]="newMessage"
+            name=""
+            class="form-control type_msg"
+            placeholder="Type your message..."
+          ></textarea>
+          <div class="input-group-append">
+            <span (click)="sendMsg()" class="input-group-text send_btn"
+              ><i class="material-icons" style="font-size: 36px">send</i></span
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
